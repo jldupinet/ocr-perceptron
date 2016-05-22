@@ -8,13 +8,16 @@ You can easily edit the data in `training_data.csv` in Excel or Numbers to add o
 
 An example of the data contained in the training set:
 
-| Uno | 0 | 1 | 1 | 0 | 0 |
-|     | 0 | 0 | 1 | 0 | 0 |
-|     | 0 | 0 | 1 | 0 | 0 |
-|     | 0 | 0 | 1 | 0 | 0 |
-|     | 0 | 0 | 1 | 0 | 0 |
-|     | 0 | 0 | 1 | 0 | 0 |
-|     | 1 | 1 | 1 | 1 | 1 |
+|     |   |   |   |   |   | 
+|-----|---|---|---|---|---| 
+| Uno | 0 | 1 | 1 | 0 | 0 | 
+|     | 0 | 0 | 1 | 0 | 0 | 
+|     | 0 | 0 | 1 | 0 | 0 | 
+|     | 0 | 0 | 1 | 0 | 0 | 
+|     | 0 | 0 | 1 | 0 | 0 | 
+|     | 0 | 0 | 1 | 0 | 0 | 
+|     | 1 | 1 | 1 | 1 | 1 | 
+
 
 * The first column of a class is the class name or tag
 * The rest of the info is a matrix of 5x7 representing the character to be recognized
