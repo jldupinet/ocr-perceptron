@@ -1,8 +1,12 @@
+import tornado.ioloop
+import tornado.web
 import csv
+import json
 
 # Perceptron Config TODO: obtain config from file
 threshold = 0.5
 learning_rate = 0.1
+trained_perceptrons = {}
 
 # Helper method to find if a csv row is empty
 def is_row_empty(row):
@@ -71,21 +75,29 @@ def classify(sensor_data, perceptrons):
 def recognize(sensor_data, weights):
     return dot_product(sensor_data, weights) > threshold
 
-#data = process_data()
-#training_set = create_training_set('Uno', data)
-#w = train(training_set)
-#recognize(data['Dos'], w)
-#entrenar un perceptron por cada numero que se quiere reconocer
-#juntar diccionario de perceptrones, uno por cada clase
-#
-#reconocer debe tomar el dato de sensores y pasarlo por todos los perceptrones, el primer perceptron que de true es la clase
-
 def create_perceptrons():
     data = process_data()
-    trained_perceptrons = {}
+    # trained_perceptrons = {}
     # train a perceptron for each class in data
     for tag in data.iterkeys():
         trained_perceptrons[tag] = train(create_training_set(tag, data))
-    print classify(data['Tres'], trained_perceptrons)
+    # classify(data['Tres'], trained_perceptrons)
 
-create_perceptrons()
+# create_perceptrons()
+class MainHandler(tornado.web.RequestHandler):
+    def post(self):
+        sensor_data = json.loads(self.request.body)['sensor']
+        result = {'result':classify(sensor_data, trained_perceptrons)}
+        self.write(result)
+
+def make_app():
+    return tornado.web.Application([
+        (r"/recognize", MainHandler),
+    ])
+
+if __name__ == "__main__":
+    create_perceptrons()
+    app = make_app()
+    app.listen(8000)
+    tornado.ioloop.IOLoop.current().start()
+        
