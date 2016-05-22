@@ -20,7 +20,7 @@ def is_row_empty(row):
 # The csv has the following structure:
 # 'class_name', input_1, input_2, ..., input_n
 #           '', input_1, input_2, ..., input_n
-def process_data(file = 'numbers.csv'):
+def process_data(file = 'training_data.csv'):
     with open(file, 'rb') as f:
         reader = csv.reader(f)
         data = {}
