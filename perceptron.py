@@ -47,7 +47,6 @@ def train(training_set):
     while True:
         error_count = 0
         for input_vector, desired_output in training_set:
-            # print(weights)
             result = dot_product(input_vector, weights) > threshold
             error = desired_output - result
             if error != 0:
@@ -66,24 +65,33 @@ def create_training_set(tag, training_data):
         training_set.append((tuple(data),1 if key == tag else 0))
     return training_set
 
+# Runs recognize() on every trained perceptron and returns the first tag that results True
 def classify(sensor_data, perceptrons):
     for key, value in perceptrons.iteritems():
         if recognize(sensor_data, value):
             return key
     return 'Not Found!'
 
+# Tries to recognize sensor_data through a single perceptron. It uses the threshold parameter
+# to determine when it gets fired
 def recognize(sensor_data, weights):
     return dot_product(sensor_data, weights) > threshold
 
+# Creates and begins perceptron training
 def create_perceptrons():
     data = process_data()
-    # trained_perceptrons = {}
-    # train a perceptron for each class in data
     for tag in data.iterkeys():
         trained_perceptrons[tag] = train(create_training_set(tag, data))
-    # classify(data['Tres'], trained_perceptrons)
 
-# create_perceptrons()
+def init():
+    print "***Starting server***"
+    print "Training perceptrons..."
+    create_perceptrons()
+    print "Perceptrons trained!"
+
+
+# Small server to listen for /recognize requests at port :8000
+
 class MainHandler(tornado.web.RequestHandler):
     def post(self):
         sensor_data = json.loads(self.request.body)['sensor']
@@ -96,8 +104,9 @@ def make_app():
     ])
 
 if __name__ == "__main__":
-    create_perceptrons()
+    init()
     app = make_app()
     app.listen(8000)
+    print "Listening to port :8000"
     tornado.ioloop.IOLoop.current().start()
         
