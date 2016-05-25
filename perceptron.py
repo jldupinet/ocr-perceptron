@@ -103,6 +103,10 @@ def init():
 # Small server to listen for /recognize requests at port :8000
 
 class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render('index.html')
+        
+class RecognizeHandler(tornado.web.RequestHandler):
     def post(self):
         sensor_data = json.loads(self.request.body)['sensor']
         result = {'result':classify(sensor_data, trained_perceptrons)}
@@ -110,7 +114,11 @@ class MainHandler(tornado.web.RequestHandler):
 
 def make_app():
     return tornado.web.Application([
-        (r"/recognize", MainHandler),
+        (r"/recognize", RecognizeHandler),
+        (r"/", MainHandler),
+        (r"/(.*)", 
+            tornado.web.StaticFileHandler,
+            {"path":r"web/"})
     ])
 
 if __name__ == "__main__":
