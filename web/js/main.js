@@ -24,7 +24,7 @@ function getData(){
 
 function recognizeMatrix(){
         matrixData = getData();
-        $.post("http://localhost:8000/recognize",JSON.stringify({ sensor: getData() }), function(data, status){
+        $.post("recognize",JSON.stringify({ sensor: getData() }), function(data, status){
                 // alert("Data: " + data['result'] + "\nStatus: " + status);
                 $('#result').text(data['result']);                        
         });
