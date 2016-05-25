@@ -7,6 +7,7 @@ import json
 threshold = 0.5
 learning_rate = 0.1
 trained_perceptrons = {}
+verbose = True
 
 # Helper method to find if a csv row is empty
 def is_row_empty(row):
@@ -67,21 +68,30 @@ def create_training_set(tag, training_data):
 
 # Runs recognize() on every trained perceptron and returns the first tag that results True
 def classify(sensor_data, perceptrons):
+    ratings = []
     for key, value in perceptrons.iteritems():
-        if recognize(sensor_data, value):
-            return key
-    return 'Not Found!'
+        verbose("Trying {0}".format(key))
+        ratings.append((key,recognize(sensor_data,value)))
+    verbose("-"*10)
+    return max(ratings, key = lambda i: i[1])[0]
 
 # Tries to recognize sensor_data through a single perceptron. It uses the threshold parameter
 # to determine when it gets fired
 def recognize(sensor_data, weights):
-    return dot_product(sensor_data, weights) > threshold
+    result = dot_product(sensor_data, weights)
+    verbose("output: {0} threshold: {1}".format(result, threshold))
+    return result 
+
 
 # Creates and begins perceptron training
 def create_perceptrons():
     data = process_data()
     for tag in data.iterkeys():
         trained_perceptrons[tag] = train(create_training_set(tag, data))
+
+def verbose(s):
+    if verbose:
+        print s
 
 def init():
     print "***Starting server***"
