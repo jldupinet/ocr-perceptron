@@ -35,7 +35,7 @@ Run with:
 python perceptron.py
 ```
 
-And open `number_recognizer.html` with your browser
+And open `localhost:8000` with your browser
 
 ## Credits
 Basic Training and Dot Product functions based on example found in [Wikipedia's Perceptron Article](https://en.wikipedia.org/wiki/Perceptron#Example)
